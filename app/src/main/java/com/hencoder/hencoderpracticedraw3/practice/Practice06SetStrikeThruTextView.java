@@ -25,8 +25,10 @@ public class Practice06SetStrikeThruTextView extends View {
 
     {
         paint.setTextSize(60);
-
+        
         // 使用 Paint.setStrikeThruText() 来设置删除线
+        // TODO: 2019/11/23 thru : 穿过
+        paint.setStrikeThruText(true);
     }
 
     @Override

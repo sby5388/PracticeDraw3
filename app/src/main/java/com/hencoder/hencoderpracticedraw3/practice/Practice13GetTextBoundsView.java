@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Practice13GetTextBoundsView extends View {
     Paint paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -17,6 +21,11 @@ public class Practice13GetTextBoundsView extends View {
     String text4 = "j";
     String text5 = "Â";
     String text6 = "â";
+
+    private final List<String> textList = new ArrayList<>();
+    private final List<Integer> offsetsList = new ArrayList<>();
+
+
     int top = 200;
     int bottom = 400;
 
@@ -33,28 +42,50 @@ public class Practice13GetTextBoundsView extends View {
     }
 
     {
+        textList.add(text1);
+        textList.add(text2);
+        textList.add(text3);
+        textList.add(text4);
+        textList.add(text5);
+        textList.add(text6);
+
         paint1.setStyle(Paint.Style.STROKE);
         paint1.setStrokeWidth(20);
         paint1.setColor(Color.parseColor("#E91E63"));
         paint2.setTextSize(160);
+
+        Rect textBounds = new Rect();
+        for (String s : textList) {
+            paint2.getTextBounds(s, 0, s.length(), textBounds);
+            offsetsList.add(-(textBounds.top + textBounds.bottom) / 2);
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        // TODO: 2019/11/9 步骤1 绘制外面的框框
         canvas.drawRect(50, top, getWidth() - 50, bottom, paint1);
 
         // 使用 Paint.getTextBounds() 计算出文字的显示区域
         // 然后计算出文字的绘制位置，从而让文字上下居中
         // 这种居中算法的优点是，可以让文字精准地居中，分毫不差
 
+        // TODO: 2019/11/9 步骤2 绘制每一个文本
         int middle = (top + bottom) / 2;
-        canvas.drawText(text1, 100, middle, paint2);
-        canvas.drawText(text2, 200, middle, paint2);
-        canvas.drawText(text3, 300, middle, paint2);
-        canvas.drawText(text4, 400, middle, paint2);
-        canvas.drawText(text5, 500, middle, paint2);
-        canvas.drawText(text6, 600, middle, paint2);
+        int index = 0;
+        int x = 100;
+        for (String s : textList) {
+            canvas.drawText(s, x, middle + offsetsList.get(index), paint2);
+            x += 100;
+            index++;
+        }
+//        canvas.drawText(text1, 100, middle + yOffsets[0], paint2);
+//        canvas.drawText(text2, 200, middle, paint2);
+//        canvas.drawText(text3, 300, middle, paint2);
+//        canvas.drawText(text4, 400, middle, paint2);
+//        canvas.drawText(text5, 500, middle, paint2);
+//        canvas.drawText(text6, 600, middle, paint2);
     }
 }

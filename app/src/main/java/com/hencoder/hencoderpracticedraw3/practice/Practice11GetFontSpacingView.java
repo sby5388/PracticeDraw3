@@ -32,7 +32,8 @@ public class Practice11GetFontSpacingView extends View {
         super.onDraw(canvas);
 
         // 使用 Paint.getFontSpacing() 来获取推荐的行距
-        float spacing = 20;
+        // TODO: 2019/11/23
+        float spacing = paint.getFontSpacing();
 
         canvas.drawText(text, 50, 100, paint);
 
